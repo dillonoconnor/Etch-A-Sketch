@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Etch-A-Sketch</title>
+        <link href="./normalize.css" rel="stylesheet">
+    </head>
+    <body> 
+        <div id="container">
+            <button id="rst" onclick = "reset()">Reset</button>
+        </div>
+        <style>
+            #container {
+                margin: 0 auto;
+                width: 90vw;
+                height: 90vw;
+                max-width: 70vh;
+                max-height: 70vh;
+            }
+            #rst {
+                width: 90vw;
+                max-width: 70vh;
+            }
+            .row {
+                display:flex;
+            }
+            .col {
+                width: 20%;
+                margin: 1px;
+                border: solid 1px black;
+            }
+
+            .col:before {
+                content:'';
+                display:block;
+                padding-top:100%;
+            }
+        </style>
+        <script>
+
+            const container = document.querySelector("#container");
+
+            function generateRandomColor() {
+                let randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+                return randomColor;
+            }
+
+            for (let i=0; i<16; i++) {
+                let rowDiv = document.createElement("div");
+                container.appendChild(rowDiv).className = "row";
+                for (let i=0; i<16; i++) {
+                    let colDiv = document.createElement("div");
+                    rowDiv.appendChild(colDiv).className = "col";
+                }
+            }
+
+            let boxes = document.querySelectorAll(".col");
+            boxes.forEach(box => box.addEventListener("mouseover",() => {
+                if (box.style.backgroundColor == '') {
+                    box.style.backgroundColor = generateRandomColor();
+                }
+            }));
+
+            const reset = () => {
+                let newGrid = prompt("How many squares across would you like for the new grid?");
+                const contDivs = document.querySelectorAll("#container .row");
+                let i=contDivs.length;
+                while(i > 0) {
+                    container.removeChild(container.lastChild);
+                    i--;
+                }
+                for (let i=0; i<newGrid; i++) {
+                let newRowDiv = document.createElement("div");
+                container.appendChild(newRowDiv).className = "row";
+                    for (let i=0; i<newGrid; i++) {
+                        let newColDiv = document.createElement("div");
+                        newRowDiv.appendChild(newColDiv).className = "col";
+                    }
+                }
+                let newBoxes = document.querySelectorAll(".col");
+                newBoxes.forEach(box => box.addEventListener("mouseover",() => {
+                        if (box.style.backgroundColor == '') {
+                            box.style.backgroundColor = generateRandomColor();
+                        }
+                    }));
+            }
+        </script>
+    </body>
+</html>
